@@ -28,7 +28,7 @@ jobs:
             TAG=$CIRCLE_BUILD_NUM
             ((TAG--))
             git clone https://github.com/swordbillz/kube_manifest-4thWeekOfCloudOps.git
-            git config --global user.email "swordbillz@gmail.com"
+            git config --global user.email "swordbillz@gmail.com" 
             git config --global user.name "swordbillz"
             cd kube_manifest-4thWeekOfCloudOps
             sed -i "s/build-.*/build-$TAG/g" menifest/deployment.yaml
