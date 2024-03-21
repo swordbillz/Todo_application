@@ -1,24 +1,29 @@
-version: 2.1 # dddd
+version: 2.1 # CircleCI 버전
 
 jobs:
   build_and_push:
-    docker:
-      - image: cimg/node:20.3.1
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
+    docker: # Docker 실행
+      - image: cimg/node:20.3.1 # Node.js 이미지 사용
+    steps: # 실행할 명령어
+      - checkout # 코드를 가져옴
+      - setup_remote_docker # Docker 레지스트리에 접근하기 위한 설정
+      - run: # Docker 이미지 빌드 및 푸시
           name: Lets build and push image
-          command: |
+          command: | # 실행할 명령어
             version="build-$CIRCLE_BUILD_NUM"
             echo $version
             docker build -t swordbill/todo-app:$version .
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push swordbill/todo-app:$version
+          # 버전을 CIRCLE_BUILD_NUM (circleci 실행시 자동으로 결정됨) 환경변수로 설정
+          # 버전을 출력
+          # Docker 이미지 빌드
+          # Docker 로그인
+          # Docker 이미지 푸시
 
-  Update_menifest:
-    docker:
-      - image: cimg/base:2023.06
+  Update_manifest: # Manifest 파일 업데이트
+    docker: # Docker 실행
+      - image: cimg/base:2023.06 # circleci 우분투 기본 이미지 사용
     steps:
       - checkout
       - setup_remote_docker
@@ -36,10 +41,20 @@ jobs:
             git commit -m "new build with imgTag build-$TAG"
             git config credential.helper 'cache --timeout=120'
             git push -q https://$GITHUB_PERSONAL_TOKEN@github.com/swordbillz/kube_manifest-4thWeekOfCloudOps.git main
-workflows:
-  GitOpsflow:
+          # TAG 환경변수에 CIRCLE_BUILD_NUM을 사용
+          # TAG를 1 감소시킴
+          # Github kube_manifest-4thWeekOfCloudOps 레파지토리 클론
+          # git 사용자 설정
+          # kube_manifest-4thWeekOfCloudOps 디렉토리로 이동
+          # deployment.yaml 파일에서 build-로 시작하는 부분을 build-$TAG로 변경
+          # 변경된 파일을 git에 추가
+          # 변경된 파일을 커밋
+          # 120초간 인증 절차를 요구하지 않도록 설정 (clone, pull, push 등 저장소에 대해서 특정 작업을 하려고 할 때마다 유저 이름과 비밀번호를 요구하는걸 방지하기 위함)
+          # Github 개인 액세스 토큰을 사용하여 push
+workflows: # 워크플로우 설정
+  GitOpsflow: # 워크플로우 이름
     jobs:
-      - build_and_push
-      - Update_menifest:
-          requires:
+      - build_and_push # build_and_push 작업 실행
+      - Update_manifest: # Update_menifest 작업 실행
+          requires: # Update_menifest 작업은 build_and_push 작업이 성공적으로 완료되어야 함
             - build_and_push
