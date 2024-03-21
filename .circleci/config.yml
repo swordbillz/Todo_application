@@ -23,7 +23,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Updating Menifest file
+          name: Updating Menifest file # dddd
           command: |
             TAG=$CIRCLE_BUILD_NUM
             ((TAG--))
