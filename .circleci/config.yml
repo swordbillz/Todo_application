@@ -21,7 +21,7 @@ jobs:
           # Docker 로그인
           # Docker 이미지 푸시
 
-  Update_manifest: # Manifest 파일 업데이트
+  Update_menifest: # Menifest 파일 업데이트
     docker: # Docker 실행
       - image: cimg/base:2023.06 # circleci 우분투 기본 이미지 사용
     steps:
@@ -55,6 +55,6 @@ workflows: # 워크플로우 설정
   GitOpsflow: # 워크플로우 이름
     jobs:
       - build_and_push # build_and_push 작업 실행
-      - Update_manifest: # Update_menifest 작업 실행
+      - Update_menifest: # Update_menifest 작업 실행
           requires: # Update_menifest 작업은 build_and_push 작업이 성공적으로 완료되어야 함
             - build_and_push
