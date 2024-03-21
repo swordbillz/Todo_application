@@ -5,8 +5,13 @@ jobs:
     docker: # Docker 실행
       - image: cimg/node:20.3.1 # Node.js 이미지 사용
     steps: # 실행할 명령어
-      - checkout # 코드를 가져옴
-      - setup_remote_docker # Docker 레지스트리에 접근하기 위한 설정
+      - checkout
+      # CircleCI 프로젝트 기본 코드를 가져옴
+      # 기본적으로 해당 레파지토리의 .circleci/config.yml 파일을 가져오는데 전부 가져오고 싶다면 checkout을 사용해야 함
+      # .circleci/config.yml 이외의 파일들이 docker 빌드할 때 사용하기 때문에 가져와야함
+      - setup_remote_docker
+      # Docker 레지스트리에 접근하기 위한 설정
+      # docker나 docker-compose 명령어를 사용하기 위해서 반드시 써야 함
       - run: # Docker 이미지 빌드 및 푸시
           name: Lets build and push image
           command: | # 실행할 명령어
@@ -40,7 +45,7 @@ jobs:
             git commit -m "new build with imgTag build-$TAG"
             git config credential.helper 'cache --timeout=120'
             git push -q https://$GITHUB_PERSONAL_TOKEN@github.com/swordbillz/kube_manifest-4thWeekOfCloudOps.git main
-          # TAG 환경변수에 CIRCLE_BUILD_NUM을 사용
+          # TAG 환경변수에 CIRCLE_BUILD_NUM을 사용 (CIRCLE_BUILD_NUM은 jobs 하나당 1씩 올라감)
           # TAG를 1 감소시킴
           # Github kube_manifest-4thWeekOfCloudOps 레파지토리 클론
           # git 사용자 설정
