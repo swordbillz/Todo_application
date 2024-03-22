@@ -6,8 +6,8 @@ jobs:
       - image: cimg/node:20.3.1 # Node.js 이미지 사용
     steps: # 실행할 명령어
       - checkout
-      # CircleCI 프로젝트 기본 코드를 가져옴
-      # 기본적으로 해당 레파지토리의 .circleci/config.yml 파일을 가져오는데 전부 가져오고 싶다면 checkout을 사용해야 함
+      # CircleCI에 연동된 기본 프로젝트 파일들을 가져옴
+      # 기본적으로 해당 레파지토리의 .circleci/config.yml 파일을 가져오는데 전부 가져오고 싶을 때
       # .circleci/config.yml 이외의 파일들이 docker 빌드할 때 사용하기 때문에 가져와야함
       - setup_remote_docker
       # Docker 레지스트리에 접근하기 위한 설정
