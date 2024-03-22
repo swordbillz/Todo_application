@@ -27,7 +27,6 @@ jobs:
     docker: # Docker 실행
       - image: cimg/base:2023.06 # circleci 우분투 기본 이미지 사용
     steps:
-      - checkout
       - run:
           name: Updating Menifest file
           command: |
