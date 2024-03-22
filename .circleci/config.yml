@@ -40,7 +40,7 @@ jobs:
             git add .
             git commit -m "new build with imgTag build-$TAG"
             git config credential.helper 'cache --timeout=120'
-            git push -q https://$GITHUB_PERSONAL_TOKEN@github.com/swordbillz/kube_manifest-4thWeekOfCloudOps.git main
+            git push https://$GITHUB_PERSONAL_TOKEN@github.com/swordbillz/kube_manifest-4thWeekOfCloudOps.git main
           # TAG 환경변수에 CIRCLE_BUILD_NUM을 사용 (CIRCLE_BUILD_NUM은 jobs 하나당 1씩 올라감)
           # TAG를 1 감소시킴. build_and_push 단계에서 docker 이미지 빌드했을 때 사용한 태그를 똑같이 사용하기 위해 1을 감소시킴
           # Github kube_manifest-4thWeekOfCloudOps 레파지토리 클론
